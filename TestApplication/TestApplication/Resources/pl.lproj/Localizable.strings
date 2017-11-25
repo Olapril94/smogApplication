@@ -1,0 +1,56 @@
+/*
+ Localizable.strings
+ //  TestApplication
+ //
+ //  Created by Aleksandra Kwiecien on 24.11.2017.
+ //  Copyright © 2017 Aleksandra Kwiecien. All rights reserved.
+
+/* Common */
+
+"Common.Jan" = "Sty";
+"Common.Feb" = "Lut";
+"Common.Mar" = "Mar";
+"Common.Apr" = "Kwi";
+"Common.May" = "Maj";
+"Common.Jun" = "Cze";
+"Common.Jul" = "Lip";
+"Common.Aug" = "Sie";
+"Common.Sep" = "Wrz";
+"Common.Oct" = "Paź";
+"Common.Nov" = "Lis";
+"Common.Dec" = "Gru";
+
+"Common.January" = "Styczeń";
+"Common.February" = "Luty";
+"Common.March" = "Marzec";
+"Common.April" = "Kwiecień";
+"Common.May" = "Maj";
+"Common.June" = "Czerwiec";
+"Common.July" = "Lipiec";
+"Common.August" = "Sierpień";
+"Common.September" = "Wrzesień";
+"Common.October" = "Październik";
+"Common.November" = "Listopad";
+"Common.December" = "Grudzień";
+
+/* EmptyData */
+"EmptyData.warningTitle" = "UWAGA!";
+"EmptyData.noData" = "Brak danych. Spróbuj ponownie.";
+"EmptyData.refresh" = "Odśwież";
+"EmptyData.networkErrMsg" = "Brak połączenia z Internetem.";
+"EmptyData.tryAgain" = "Spróbuj ponownie";
+"EmptyData.noDataAfterFilter" = "Brak danych dla wybranych kryteriów filtrowania.";
+"EmptyData.serverOrClientErrorTitle" = "Wystąpił problem z pobraniem danych.";
+"EmptyData.serverUnavailableMsg" = "Wystąpił problem podczas łączenia z serwerem.";
+
+
+/* ResponseError */
+"ResponseError.networkNoReachable" = "Brak połączenia z Internetem.";
+"ResponseError.unknownError" = "Wystąpił nieoczekiwany błąd.";
+"ResponseError.400" = "Nieprawidłowe zapytanie.";
+"ResponseError.404" = "Nie znaleziono.";
+"ResponseError.408" = "Przekroczenie limitu czasu żądania.";
+"ResponseError.500" = "Wystąpił nieoczekiwany błąd serwera.";
+
+
+
