@@ -1,1 +1,2 @@
-## Please install pods
+## Check develop for source code
+## Thanks ;)
