@@ -13,10 +13,12 @@ class ResponseError {
     var httpCode: Int
     var localizedDescription: String = ""
     var json: AnyObject?
+    var error: Error?
     
     init(httpCode: Int, error: Error) {
         self.httpCode = httpCode
         self.localizedDescription = error.localizedDescription
+        self.error = error
     }
     
     init(httpCode: Int, json: AnyObject) {

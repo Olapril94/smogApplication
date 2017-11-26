@@ -16,51 +16,80 @@ class HTTPClient: NSObject {
     
     static let shared = HTTPClient()
     
-    fileprivate let serverUrl = TargetConfig.baseURLString
-    fileprivate var manager: Alamofire.SessionManager!
+    var manager: Alamofire.SessionManager!
     
     private override init() {
         super.init()
         let configuration = URLSessionConfiguration.default
         self.manager = Alamofire.SessionManager(configuration: configuration)
     }
-    
-    fileprivate func showNetworkActivityIndicator(visible: Bool) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = visible
-    }
 }
 
-//MARK: - Communication
+// MARK: - Communication
 
 extension HTTPClient {
-    func request(url: String, parameters: Parameters, body: String? = nil, method: HTTPMethod,
-                 completion: @escaping (_ json: String?, _ error: ResponseError?, _ httpCode: Int) -> Void) {
-        let prefixedUrl = url
-        var encoding: ParameterEncoding = URLEncoding.default
+    
+    func responseObjectCollection<E: Mappable>(router: URLRequestConvertible, completion: @escaping (_ entity: [E]?, _ error: ResponseError?) -> Void) {
+        let request = self.manager!.request(router)
+        let queue = DispatchQueue(label: "get", attributes: .concurrent)
         
-        if body != nil {
-            encoding = JsonStringEncoding(jsonString: body!)
-        }
+        request.response(
+            queue: queue,
+            responseSerializer: DataRequest.jsonResponseSerializer(options: .allowFragments),
+            completionHandler: { response in
+    
+                var httpCode = 0
+                if let code = response.response?.statusCode {
+                    httpCode = code
+                }
+                switch response.result {
+                case .success(let value):
+                    DispatchQueue.main.async {
+                        if let responseObject = Mapper<E>().mapArray(JSONObject: value), (200 ... 299).contains(httpCode) {
+                            completion(responseObject, nil)
+                        } else {
+                            let responseError = ResponseError(httpCode: httpCode, json: value as AnyObject)
+                            completion(nil, responseError)
+                        }
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        let responseError = ResponseError(httpCode: httpCode, error: error)
+                        completion(nil, responseError)
+                    }
+                }
+        })
+    }
+    
+    func responseObject<E: Mappable>(router: URLRequestConvertible, completion: @escaping (_ entity: E?, _ error: ResponseError?) -> Void) {
+    
+        let request = self.manager!.request(router)
+        let queue = DispatchQueue(label: "get", attributes: .concurrent)
         
-        _ = manager.request(serverUrl + prefixedUrl, method: method, parameters: parameters,
-                                      encoding: encoding).responseData { response in
-                                        let httpCode = response.response?.statusCode ?? 0
-                                        
-                                        switch response.result {
-                                        case .success(_):
-                                            if let data = response.result.value {
-                                                let convertedData = String(data: data, encoding: .utf8)
-                                                if (200 ... 299).contains(httpCode) {
-                                                    completion(convertedData, nil, httpCode)
-                                                }
-                                            }
-                                        case .failure(let error):
-                                            DispatchQueue.main.async {
-                                                let responseError = ResponseError(httpCode: httpCode, error: error)
-                                                completion(nil, responseError, httpCode)
-                                            }
-                                        }
-                                        
-        }
+        request.response(
+            queue: queue,
+            responseSerializer: DataRequest.jsonResponseSerializer(options: .allowFragments),
+            completionHandler: { response in
+                var httpCode = 0
+                if let code = response.response?.statusCode {
+                    httpCode = code
+                }
+                switch response.result {
+                case .success(let value):
+                    DispatchQueue.main.async {
+                        if let responseObject = Mapper<E>().map(JSONObject: value), (200 ... 299).contains(httpCode) {
+                            completion(responseObject, nil)
+                        } else {
+                            let responseError = ResponseError(httpCode: httpCode, json: value as AnyObject)
+                            completion(nil, responseError)
+                        }
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        let responseError = ResponseError(httpCode: httpCode, error: error)
+                        completion(nil, responseError)
+                    }
+                }
+        })
     }
 }

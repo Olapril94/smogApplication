@@ -7,7 +7,12 @@
 
  
 /* Main Screen */
+
 "navigationbar.main.title" = "Zanieczyszczenie miasta";
+
+/* City Screen */
+
+"navigationbar.citylist.title" = "Wybierz miasto";
 
 /* Common */
 
@@ -55,10 +60,6 @@
 "ResponseError.404" = "Nie znaleziono.";
 "ResponseError.408" = "Przekroczenie limitu czasu żądania.";
 "ResponseError.500" = "Wystąpił nieoczekiwany błąd serwera.";
-
-/* Chart */
-"chart.xaxis.description" = "Daty";
-"chart.yaxis.description" = "μg/m3";
 
 
 
